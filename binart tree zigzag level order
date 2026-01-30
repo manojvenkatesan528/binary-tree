@@ -1,0 +1,83 @@
+import java.io.*;
+import java.util.*;
+
+public class Solution {
+
+    public static void main(String[] args) {
+        /* Enter your code here. Read input from STDIN. Print output to STDOUT. Your class should be named Solution. */
+    Scanner sc=new Scanner(System.in);
+        String s=sc.nextLine(); 
+            String sarr[]=s.split(" ");
+        int n=sarr.length;
+        int arr[]=new int[n];
+        for(int i=0; i<n; i++) 
+            arr[i]=Integer.parseInt(sarr[i]);
+        
+        Node root=new Node(arr[0]);
+        Queue<Node> q=new LinkedList<>();
+        q.offer(root);
+        int i=1;
+        while(i<n) {
+            Node t=q.poll();
+            if(i<n && arr[i]!=-1) {
+                t.left=new Node(arr[i]);
+                q.offer(t.left);
+            }
+            i++;
+            if(i<n && arr[i]!=-1) {
+                t.right=new Node(arr[i]);
+                q.offer(t.right);
+            }
+            i++;
+        }
+        List<List<Integer>> res=new ArrayList<>();
+        zigzag(root,res);
+        for(List<Integer> j:res) {
+            for(int k:j) {
+                System.out.print(k+" ");
+            }
+            System.out.println();
+        }
+        
+        
+    }
+    public static void zigzag(Node root,List<List<Integer>> res) {
+        Queue<Node> q=new LinkedList<>();//100
+        q.offer(root);
+        boolean dir=true;
+        while(!q.isEmpty()) {
+            int size=q.size(); //1
+            LinkedList<Integer> list=new LinkedList<>();
+            if(dir){
+            for(int i=0; i<size; i++) {
+                Node t=q.poll();
+                list.addLast(t.data);
+                if(t.left!=null) q.offer(t.left);
+                if(t.right!=null) q.offer(t.right);
+                
+}
+                dir=!dir;
+        }
+            else {
+                for(int i=0; i<size; i++) {
+                    Node t=q.poll();
+                    list.addFirst(t.data);
+                    if(t.left!=null) q.offer(t.left);
+                if(t.right!=null) q.offer(t.right);
+}
+                 dir=!dir;
+            }
+            res.add(list);
+        }
+        
+        
+    }
+}
+class Node{
+    int data;
+    Node left,right;
+    Node(int data) {
+        this.data=data;
+        left=right=null;
+    }
+}
